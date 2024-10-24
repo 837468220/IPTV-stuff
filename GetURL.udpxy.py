@@ -26,11 +26,11 @@ def SortIPTVSubChannel(subChannelDict,urlType):
 
 def writeResult(outFile,subTitle,urlResult,channelDict):
     f2 = open(outFile, 'a')
-    #subTitle = '#EXTINF:-1' + ' tvg-logo="' + re.sub('([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{1,5}','192.168.6.249',channelDict['icon']) + '",' + channelDict['subTitle']
-    subTitle = '#EXTINF:-1' + ' tvg-logo="' + channelDict['icon'] + '",' + channelDict['subTitle']
+    subTitle = '#EXTINF:-1' + ' tvg-logo="' + re.sub('([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{1,5}','192.168.6.249',channelDict['icon']) + '",' + channelDict['subTitle']
+    #subTitle = '#EXTINF:-1' + ' tvg-logo="' + channelDict['icon'] + '",' + channelDict['subTitle']
     f2.write(subTitle + '\n')
-    #f2.write('http://192.168.6.1:4022/udp/' + urlResult.strip('rtp://|udp://') + '\n')
-    f2.write(urlResult + '\n')
+    f2.write('http://192.168.6.1:4022/udp/' + urlResult.strip('rtp://|udp://') + '\n')
+    #f2.write(urlResult + '\n')
     f2.close()
 
 if __name__ == '__main__':
