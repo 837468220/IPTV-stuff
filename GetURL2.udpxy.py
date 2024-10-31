@@ -3,7 +3,11 @@ import json, argparse, sys, os, textwrap, re
 def SortResult(sourceFile, outFile, urlType, subType):
     f = open(sourceFile, 'r')
     f2 = open(outFile, 'w')
-    f2.write('#EXTM3U name="CMCC-IPTV"' + '\n')
+    if subType == None :
+      flag = ''
+    else :
+      flag = '-' + subType
+    f2.write('#EXTM3U name="CMCC-IPTV-2' + flag + '"' + '\n')
     f2.close()
     urlDict = json.loads(f.read())
     channelList = urlDict['channels']
