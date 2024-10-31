@@ -1,5 +1,8 @@
 import json, argparse, sys, os, textwrap, re
 
+channelSetInFile=set()
+channelSetInFile.clear();
+
 def SortResult(sourceFile, outFile, urlType, subType):
     f = open(sourceFile, 'r')
     f2 = open(outFile, 'w')
@@ -58,11 +61,35 @@ def writeResult(outFile,subTitle,urlResult,channelDict):
 
 def writeResult2(outFile,subTitle,urlResult,channelDict,phychannelDict, subType):
     f2 = open(outFile, 'a')
+    if subType == 'udpxy' :
+      urlResult= 'http://192.168.6.1:4022/udp/' + urlResult.strip('rtp://|udp://')
+
+    if channelSetInFile.__contains__(urlResult) :
+      return
+
+    channelSetInFile.add(urlResult)
+
     grouptitle = ''
     if re.search('CCTV', channelDict['subTitle']) :
       grouptitle = ' group-title="CCTV" '
+    elif re.search('CETV', channelDict['subTitle']) :
+      grouptitle = ' group-title="CETV" '
+    elif re.search('CGTN', channelDict['subTitle']) :
+      grouptitle = ' group-title="CGTN" '
+    elif re.search('IPTV', channelDict['subTitle']) :
+      grouptitle = ' group-title="IPTV+" '
     elif re.search('卫视', channelDict['subTitle']) :
       grouptitle = ' group-title="卫视" '
+    elif re.search('广东', channelDict['subTitle']) :
+      grouptitle = ' group-title="广东" '
+    elif re.search('咪咕', channelDict['subTitle']) :
+      grouptitle = ' group-title="咪咕" '
+    elif re.search('百视通', channelDict['subTitle']) :
+      grouptitle = ' group-title="百视通" '
+    elif re.search('精选', channelDict['subTitle']) :
+      grouptitle = ' group-title="精选频道" '
+    elif re.search('卡|动画', channelDict['subTitle']) :
+      grouptitle = ' group-title="cartoon" '
     else :
       grouptitle = ''
     subTitle = '#EXTINF:-1'
@@ -76,11 +103,10 @@ def writeResult2(outFile,subTitle,urlResult,channelDict,phychannelDict, subType)
       if re.search('清', phychannelDict['bitrateTypeName']) :
         subTitle = re.sub('.清$', '', subTitle)
       subTitle = subTitle + '-' + phychannelDict['bitrateTypeName']
+
     f2.write(subTitle + '\n')
-    if subType == 'udpxy' :
-      f2.write('http://192.168.6.1:4022/udp/' + urlResult.strip('rtp://|udp://') + '\n')
-    else :
-      f2.write(urlResult + '\n')
+
+    f2.write(urlResult + '\n')
     f2.close()
 
 if __name__ == '__main__':
